@@ -9,4 +9,3 @@ class BreathCycle(StatesGroup):
     deep_breath = State()
     secondary_breath_holding = State()
     round_end = State()
-    session_end = State()
