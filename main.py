@@ -5,6 +5,7 @@ from os import getenv
 from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
 
+from exceptions import LoadConfigException
 from handlers import include_handlers
 
 
@@ -14,9 +15,16 @@ class Config:
 
 
 def get_config() -> Config:
-    load_dotenv()
+    load_dotenv(".env")
 
-    return Config(bot_token=getenv("BOT_TOKEN"))
+    bot_token = getenv("BOT_TOKEN")
+
+    print(bot_token)
+
+    if not bot_token:
+        raise LoadConfigException("BOT_TOKEN config variable is required")
+
+    return Config(bot_token=bot_token)
 
 
 async def main() -> None:
