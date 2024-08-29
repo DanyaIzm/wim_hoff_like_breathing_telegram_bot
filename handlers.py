@@ -3,7 +3,7 @@ from aiogram import F, Router
 from aiogram.filters import CommandStart, and_f, or_f
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
-from fluentogram import TranslatorRunner
+from fluentogram import TranslatorRunner  # type: ignore[import-untyped]
 
 from breathing import hold_breath
 import keyboards
