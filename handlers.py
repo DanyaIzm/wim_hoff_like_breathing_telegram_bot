@@ -1,9 +1,9 @@
-import asyncio
-from aiogram import F, Bot, Router
+from aiogram import F, Router
 from aiogram.filters import CommandStart, and_f
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
 
+from breathing import hold_breath
 import keyboards
 from states import BreathCycle
 
@@ -13,7 +13,6 @@ SECONDARY_BREATH_HOLDING_SECONDS = 15
 _router = Router()
 
 
-# todo: refactor
 @_router.message(F.text == "Cancel")
 async def handle_cancel(message: Message, state: FSMContext) -> None:
     await message.answer(
@@ -79,21 +78,6 @@ async def handle_seconds_to_hold_amount_selection(
     except ValueError:
         await message.answer("Please send me a correct number")
         await state.set_state(BreathCycle.seconds_to_hold_amount_selection)
-
-
-# todo: refactor
-async def hold_breath(bot: Bot, chat_id: int, seconds_to_hold: int) -> None:
-    seconds_left = seconds_to_hold
-
-    await bot.send_message(chat_id, "Now hold your breath!")
-    timer_message = await bot.send_message(chat_id, f"Seconds left: {seconds_left}")
-
-    while seconds_left > 0:
-        await asyncio.sleep(1)
-        seconds_left -= 1
-        await timer_message.edit_text(f"Seconds left: {seconds_left}")
-
-    await timer_message.delete()
 
 
 @_router.callback_query(and_f(F.data == "ready", BreathCycle.pre_breathing))
